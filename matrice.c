@@ -8,14 +8,14 @@
 
 float** allocation_matrice_carree_float(int nbe)
 {
+  int i;
+  float **matrice;
 
+  ALLOUER(matrice, nbe);
+  for(i = 0; i < nbe; ++i)
+    ALLOUER(matrice[i],nbe);
 
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+  return matrice;
 }
 
 /*
@@ -24,12 +24,12 @@ return 0 ; /* pour enlever un warning du compilateur */
 
 void liberation_matrice_carree_float(float **table, int nbe)
 {
+  int i;
 
-
-
-
-
-
+  for(i = 0; i < nbe; ++i)
+    free(table[i]);
+  
+  free(table);
 }
 
 

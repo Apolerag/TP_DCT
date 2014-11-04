@@ -243,8 +243,8 @@ int sf_table_ok(const struct shannon_fano *sf)
   }
   if ( escape == 0 )
   {
-    fprintf(stderr, "Pas de ESCAPE dans la table !\n") ;
-    return(0) ;
+      fprintf(stderr, "Pas de ESCAPE dans la table !\n") ;
+      return(0) ;
   }
   return 1 ;
 }
