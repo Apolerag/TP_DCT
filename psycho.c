@@ -2,7 +2,7 @@
 #include "psycho.h"
 
 /*
- * Soit F1!=0 et F2!=0 deux ``fréquences'' quelconques du son avec F1!=F2
+ * Soit F1!=0 et F2!=0 deux "fréquences" quelconques du son avec F1!=F2
  *      A1 et A2 leurs amplitudes respectives.
  * La fréquence du son est l'indice dans le tableau "dct".
  *
@@ -28,20 +28,23 @@
 
 void psycho(int nbe, float *dct, float c)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	int i,j;
+	fprintf(stderr, "c %f\n", c);
+	for(i = 10; i < 11; ++i)
+	{
+		if(dct[i] != 0)
+		{
+			for(j = 1; j < nbe; ++j)
+			{
+				if(i != j)
+				{
+					if( (c * abs(dct[i])) < abs( dct[j]/(j - i) ) )
+					{
+						dct[i] = 0;
+					}
+				}
+			}
+		}
+	}
 }
 
