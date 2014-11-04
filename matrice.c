@@ -46,10 +46,10 @@ void produit_matrices_carrees_float(int nbe, float **a, float **b, float **resul
   for(j=0; j<nbe; j++)
     for(i=0; i<nbe; i++)
       {
-	s = 0 ;
-	for(k=0;k<nbe;k++)
-	  s += a[j][k]*b[k][i] ;
-	resultat[j][i] = s ;
+      	s = 0 ;
+      	for(k=0;k<nbe;k++)
+      	  s += a[j][k]*b[k][i] ;
+      	resultat[j][i] = s ;
       }
  }
 
@@ -65,12 +65,12 @@ void produit_matrice_carree_vecteur(int nbe, float **m, const float *v, float *r
   float s ;
 
   for(j=0; j<nbe; j++)
-    {
-      s = 0 ;
-      for(i=0;i<nbe;i++)
-	s += m[j][i] * v[i] ;
-      resultat[j] = s ;
-    }
+  {
+    s = 0 ;
+    for(i=0;i<nbe;i++)
+      s += m[j][i] * v[i] ;
+    resultat[j] = s ;
+  }
  }
 
 /*
@@ -98,7 +98,7 @@ void affiche_matrice_carree(int nbe, float **a, FILE *f)
    for(j=0;j<nbe;j++)
      {
        for(i=0;i<nbe;i++)
-	 fprintf(f, " %8.4g", a[j][i]) ;
+        fprintf(f, " %8.4g", a[j][i]) ;
        fprintf(f, "\n") ;
      }
  }

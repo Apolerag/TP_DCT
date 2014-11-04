@@ -19,13 +19,22 @@
 
 void coef_dct(int nbe, float **table)
 {
+	int i,j;
+	double sqrtn = 1/sqrt(nbe);
+	double sqrt2n = sqrt(2)/sqrt(nbe);
 
+	for (i = 0; i < nbe; ++i)
+	{
+		table[0][i] = sqrtn;
+	}
 
-
-
-
-
-
+	for(i = 0; i < nbe; ++i)
+	{
+		for (j = 1; j < nbe; ++j)
+		{
+			table[j][i] = sqrt2n * cos(j * M_PI * ( (2 * i) + 1)/(2 * nbe) );
+		}
+	}
 }
 
 /*
@@ -41,19 +50,19 @@ void dct(int   inverse,		/* ==0: DCT, !=0 DCT inverse */
 	 float *sortie		/* Le son après transformation */
 	 )
 {
+	float ** dct = allocation_matrice_carree_float(nbe);
+	float ** dct_t = allocation_matrice_carree_float(nbe);
+	coef_dct( nbe, dct);
+	transposition_matrice_carree(nbe, dct, dct_t);
+	if(inverse == 0)
+	{
+		produit_matrice_carree_vecteur(nbe, dct, entree, sortie);
+	}
+	else
+	{
+		produit_matrice_carree_vecteur(nbe, dct_t, entree, sortie);
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	liberation_matrice_carree_float(dct, nbe);
+	liberation_matrice_carree_float(dct_t, nbe);
 }
