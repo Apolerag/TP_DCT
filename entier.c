@@ -83,7 +83,6 @@ unsigned int get_entier(struct bitstream *b)
 		}
 	}
 	retour = get_bits(b, prefixe_courant -1);
-	
 	return pow2(prefixe_courant)/2 + retour; 
 }
 
@@ -128,6 +127,5 @@ int get_entier_signe(struct bitstream *b)
 	{
 		ret = -(ret+1);
 	}
-
 	return ret;
 }

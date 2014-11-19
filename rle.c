@@ -20,7 +20,7 @@
 /*
  * RLE : Run Length Encoding
  *
- * Version spécifique pour stocker les valeurs de la DCT.
+ * Version spécifique pour stocker les valeurs de la DTC.
  *
  * Au lieu de coder un entier par valeur
  * on va coder le nombre d'entiers qui sont nuls (entier positif)
@@ -44,34 +44,19 @@
 void compresse(struct intstream *entier, struct intstream *entier_signe
 	       , int nbe, const float *dct)
 {
+	int i;
+	int compteur = 0;
 
+	for (i = 0; i < nbe; ++i) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		if(round(dct[i]) == 0) compteur ++;
+		else {
+			put_entier_intstream(entier, compteur);
+			put_entier_intstream(entier_signe, round(dct[i]));
+			compteur = 0;
+		}
+	}
+	if(compteur != 0) put_entier_intstream(entier, compteur);
 
 }
 
@@ -83,20 +68,15 @@ void decompresse(struct intstream *entier, struct intstream *entier_signe
 		 , int nbe, float *dct)
 {
 
+	int i,j;
+	int compteur;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	for (i = 0; i < nbe; ++i) {
+		compteur = get_entier_intstream(entier);
+		for(j = 0; j < compteur; j++)
+			dct[i+j] = 0;
+		i += j;
+		if(i < nbe) dct[i] = get_entier_intstream(entier_signe);
+	}
 
 }
