@@ -55,7 +55,6 @@ void put_entier_intstream(struct intstream *is, int evenement)
 
 int get_entier_intstream(struct intstream *is)
 {
-  int i;
   switch(is->type)
     {
     case Shannon_fano:
