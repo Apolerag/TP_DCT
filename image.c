@@ -62,7 +62,7 @@ struct image* lecture_image(FILE *f)
 	char c;
 	char ligne[MAXLIGNE] ;
 	int largeur = 0, hauteur = 0;
-	int i,j,k;
+	int i,j;
 
 	//format entete
 	lire_ligne(f, ligne);
@@ -95,23 +95,9 @@ struct image* lecture_image(FILE *f)
 	lire_ligne(f, ligne);
 	
 	//lecture de l'image
-	//k = 0;
-	//lire_ligne(f, ligne);
-	for (i = 0; i < image->hauteur; ++i) {
-		for (j = 0; j < image->largeur; ++j) {
-
-			image->pixels[i][j] = fgetc(f);
-			/*k++;
-			if(ligne[k] == '\n') {
-				lire_ligne(f, ligne);
-				k = 0;*/
-			/*	fprintf(stderr, "iut ligne[0] %c\n",ligne[0] );
-				fprintf(stderr, "iut ligne[1] %c\n",ligne[1] );
-				fprintf(stderr, "iut ligne[2] %c\n",ligne[2] );
-				fprintf(stderr, "iut ligne[3] %c\n",ligne[3] );*/
-			//}
-		}
-	}
+	for (i = 0; i < image->hauteur; ++i)
+		fread (image->pixels[i] ,sizeof(char),image->largeur,f);
+		
 	
 	return image ; 
 }
@@ -122,14 +108,11 @@ struct image* lecture_image(FILE *f)
 
 void ecriture_image(FILE *f, const struct image *image)
 {
+	int i;
+	fprintf(f, "P5\n%d %d\n255\n", image->largeur, image->hauteur);
 
+	for(i = 0; i < image->hauteur; i++) {
+		fwrite(image->pixels[i] , sizeof(char), image->largeur, f);
+	}
 
-
-
-
-
-
-
-
-
-}
+}	
