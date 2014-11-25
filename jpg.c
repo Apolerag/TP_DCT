@@ -13,27 +13,33 @@
  */
 void dct_image(int inverse, int nbe, float **image)
 {
+  //Création DCT
+  float ** DCT;
+  DCT = allocation_matrice_carree_float(nbe);
+  coef_dct(nbe, DCT);
 
+  //creation transposée
+  float ** DCTtrans;
+  DCTtrans = allocation_matrice_carree_float(nbe);
+  transposition_matrice_carree(nbe, DCT, DCTtrans);
 
+  //matrice temporaire
+  float ** temp;
+  temp = allocation_matrice_carree_float(nbe);
 
+  if(inverse == 0) {
+    produit_matrices_carrees_float(nbe, DCT, image, temp);
+    produit_matrices_carrees_float(nbe, temp, DCTtrans, image);
+  }
+  else {
+    produit_matrices_carrees_float(nbe, DCTtrans, image, temp);
+    produit_matrices_carrees_float(nbe, temp, DCT, image);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //libération des matrices utilisées
+  liberation_matrice_carree_float(temp, nbe);
+  liberation_matrice_carree_float(DCTtrans, nbe);
+  liberation_matrice_carree_float(DCT, nbe);
 }
 
 /*
@@ -43,14 +49,15 @@ void dct_image(int inverse, int nbe, float **image)
  */
 void quantification(int nbe, int qualite, float **extrait, int inverse)
 {
-
-
-
-
-
-
-
-
+  int i, j;
+  float temp;
+  for(i = 0; i < nbe; i++) {
+    for(j = 0; j < nbe; j++) {
+      temp = 1 + (i + j + 1) * qualite;
+      if (inverse == 0)  extrait[i][j] =  extrait[i][j] / temp;
+      else extrait[i][j] = extrait[i][j] * temp;
+    }
+  }
 }
 /*
  * ZIGZAG.
@@ -75,27 +82,48 @@ void quantification(int nbe, int qualite, float **extrait, int inverse)
  * |   |   |   |   |    
  * +---+---+---+---+    
  */
+static int descend = 1 ; // 0 = false et 1 = true
 void zigzag(int nbe, int *y, int *x)
 {
+  int ligne = *y; int colonne = *x;
 
+  if(descend == 1) {
+    if(ligne != 0 && colonne != nbe - 1) { // si non à une extremité de l'image
+      ligne--;
+      colonne++;
+    }
+    else { // atteint la première ligne ou la dernière colonne
+      descend = 0; // on remonte
+      if(ligne == 0) {
+        if(colonne != nbe - 1) colonne++;
+        else ligne++;
+      }
+      else ligne++;
+    }
+  }
+  else {
+     if(colonne != 0 && ligne != nbe - 1) { // si non à une extremité de l'image
+      colonne--;
+      ligne++;
+    }
+    else { // atteint la première colonne ou la dernière ligne
+      descend = 1; //on descend
+      if(colonne == 0) {
+        if(ligne != nbe - 1)
+          ligne++;
+        else
+          colonne++;
+      }
+      else
+      colonne++;
+    }
+  }
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  *x = colonne; *y = ligne;
 }
+
+
 /*
  * Extraction d'une matrice de l'image (le résultat est déjà alloué).
  * La sous-image carrée à la position et de la taille indiquée

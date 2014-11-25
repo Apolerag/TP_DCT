@@ -45,6 +45,7 @@ void liberation_image(struct image* image)
 	int i;
 	for (i = 0; i < image->hauteur; ++i)
 		free(image->pixels[i]);
+
 	free(image->pixels);
 
 	free(image);
@@ -65,9 +66,9 @@ struct image* lecture_image(FILE *f)
 	int i,j;
 
 	//format entete
-	lire_ligne(f, ligne);
+	lire_ligne(f, ligne); //P5
 
-	lire_ligne(f, ligne);
+	lire_ligne(f, ligne); //Largeur Hauteur
 
 	//recuperation de la valeur de largeur
 	i = 0;
@@ -94,7 +95,7 @@ struct image* lecture_image(FILE *f)
 	//255
 	lire_ligne(f, ligne);
 	
-	//lecture de l'image
+	//lecture de l'image ligne par ligne
 	for (i = 0; i < image->hauteur; ++i)
 		fread (image->pixels[i] ,sizeof(char),image->largeur,f);
 		
@@ -109,8 +110,10 @@ struct image* lecture_image(FILE *f)
 void ecriture_image(FILE *f, const struct image *image)
 {
 	int i;
+	//ecriture de l'entete
 	fprintf(f, "P5\n%d %d\n255\n", image->largeur, image->hauteur);
 
+	//ecriture du fichier ligne par ligne de l'image
 	for(i = 0; i < image->hauteur; i++) {
 		fwrite(image->pixels[i] , sizeof(char), image->largeur, f);
 	}
