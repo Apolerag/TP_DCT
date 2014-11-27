@@ -342,43 +342,41 @@ void ondelette_1d_inverse(const float *entree, float *sortie, int nbe)
   }     
 }
 
+static float** ondelette_2d_inverse_recursive(float **image, int hauteur, int largeur)
+{
+  float** trans, **trans2, ** temp;
+  int i;
+  if(hauteur == 1 && largeur == 1)
+    return image;
+
+  trans = allocation_matrice_float(largeur, hauteur);
+  trans2 = allocation_matrice_float(largeur, hauteur);
+  temp = allocation_matrice_float(hauteur, largeur);
+
+
+  image = ondelette_2d_inverse_recursive(image,
+          (hauteur%2 == 0)?hauteur/2:hauteur/2 +1,
+          (largeur%2 == 0)?largeur/2:largeur/2 + 1);
+
+  transposition_matrice(image, trans, hauteur, largeur);
+  for (i = 0; i < largeur; ++i)
+      ondelette_1d_inverse(trans[i], trans2[i], hauteur);
+
+  transposition_matrice(trans2, temp, largeur, hauteur);
+
+  for (i = 0; i < hauteur; ++i)
+      ondelette_1d_inverse(temp[i], image[i], largeur);
+
+  liberation_matrice_float(temp, hauteur);
+  liberation_matrice_float(trans, largeur);
+  liberation_matrice_float(trans2, largeur);
+
+  return image;
+}
 
 void ondelette_2d_inverse(float **image, int hauteur, int largeur)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  image = ondelette_2d_inverse_recursive(image, hauteur, largeur);
 
 }
 
