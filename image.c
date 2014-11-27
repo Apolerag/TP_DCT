@@ -63,7 +63,7 @@ struct image* lecture_image(FILE *f)
 	char c;
 	char ligne[MAXLIGNE] ;
 	int largeur = 0, hauteur = 0;
-	int i,j;
+	int i;
 
 	//format entete
 	lire_ligne(f, ligne); //P5

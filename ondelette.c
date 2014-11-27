@@ -124,14 +124,23 @@ void affiche_matrice_float(float **im, int hauteur, int largeur)
 
 void ondelette_1d(const float *entree, float *sortie, int nbe)
 {
+  int i;
+  int caseSomme = 0;
+  int caseDiff = (nbe%2 ==0)?nbe/2:nbe/2+1;
 
-
-
-
-
-
-
-
+  for (i = 0; i < nbe; i+=2)
+  {
+    if(nbe == i+1) {
+      sortie[caseSomme] = entree[i];
+    }
+    else 
+    {
+      sortie[caseSomme] = (entree[i] + entree[i+1])/2;
+      sortie[caseDiff] = (entree[i] - entree[i+1])/2;
+    }
+    caseSomme++;   
+    caseDiff++;                                                        
+  }       
 
 }
 
@@ -187,37 +196,43 @@ void ondelette_1d(const float *entree, float *sortie, int nbe)
 
 void ondelette_2d(float **image, int hauteur, int largeur)
 {
+  int i,j;
+  float** temp, **img;
+  float** trans, **trans2;
 
+  while(hauteur > 1 || largeur > 1) {
+    temp = allocation_matrice_float(hauteur, largeur);
+    img = allocation_matrice_float(hauteur, largeur);
+    trans = allocation_matrice_float(largeur, hauteur);
+    trans2 = allocation_matrice_float(largeur, hauteur);
 
+    for (i = 0; i < hauteur; ++i)
+      for (j = 0; j < largeur; ++j)
+        temp[i][j] = image[i][j];
 
+    for (i = 0; i < hauteur; ++i)
+      ondelette_1d(temp[i], img[i], largeur);
 
+    transposition_matrice(img, trans, hauteur, largeur);
+    
+    for (i = 0; i < largeur; ++i)
+      ondelette_1d(trans[i], trans2[i], hauteur);
 
+    transposition_matrice(trans2, temp, largeur, hauteur);
 
+     for (i = 0; i < hauteur; ++i)
+      for (j = 0; j < largeur; ++j)
+        image[i][j] = temp[i][j];
 
+    liberation_matrice_float(temp, hauteur);
+    liberation_matrice_float(img, hauteur);
+    liberation_matrice_float(trans, largeur);
+    liberation_matrice_float(trans2, largeur);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    largeur = (largeur%2 == 0)?largeur/2:largeur/2 + 1;
+    hauteur = (hauteur%2 == 0)?hauteur/2:hauteur/2 + 1;
+  }
+  
 }
 
 /*
@@ -308,15 +323,23 @@ void codage_ondelette(float **image, int hauteur, int largeur, FILE *f)
 
 void ondelette_1d_inverse(const float *entree, float *sortie, int nbe)
 {
+  int i;
+  int caseSomme = 0;
+  int caseDiff = (nbe%2 ==0)?nbe/2:nbe/2+1;
 
-
-
-
-
-
-
-
-
+  for (i = 0; i < nbe; i+=2)
+  {
+    if(nbe == i+1) {
+      sortie[i] = entree[caseSomme];
+    }
+    else 
+    {
+      sortie[i] = entree[caseSomme] + entree[caseDiff];
+      sortie[i+1] = entree[caseSomme] - entree[caseDiff];
+    }
+    caseSomme++;   
+    caseDiff++;                                                        
+  }     
 }
 
 

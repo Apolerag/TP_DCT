@@ -22,7 +22,7 @@ tests_proto.h tests_table.h Makefile.table:Makefile tests_genere $(OBJSH)
 	./tests_genere $(OBJS)
 
 clean:
-	-rm *~ *.o xxx* tests
+	-rm -rf *~ *.o xxx* tests
 
 TAGS:tests
 	-etags *.[ch]

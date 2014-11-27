@@ -85,42 +85,41 @@ void quantification(int nbe, int qualite, float **extrait, int inverse)
 static int descend = 1 ; // 0 = false et 1 = true
 void zigzag(int nbe, int *y, int *x)
 {
-  int ligne = *y; int colonne = *x;
+ // x = colonne y = ligne
 
   if(descend == 1) {
-    if(ligne != 0 && colonne != nbe - 1) { // si non à une extremité de l'image
-      ligne--;
-      colonne++;
+    if(*y != 0 && *x != nbe - 1) { // si non à une extremité de l'image
+      *y -= 1;
+      *x += 1;
     }
-    else { // atteint la première ligne ou la dernière colonne
+    else { // atteint la première *y ou la dernière *x
       descend = 0; // on remonte
-      if(ligne == 0) {
-        if(colonne != nbe - 1) colonne++;
-        else ligne++;
+      if(*y == 0) {
+        if(*x != nbe - 1) *x += 1;
+        else *y += 1;
       }
-      else ligne++;
+      else *y += 1;
     }
   }
   else {
-     if(colonne != 0 && ligne != nbe - 1) { // si non à une extremité de l'image
-      colonne--;
-      ligne++;
+     if(*x != 0 && *y != nbe - 1) { // si non à une extremité de l'image
+      *x -= 1;
+      *y += 1;
     }
-    else { // atteint la première colonne ou la dernière ligne
+    else { // atteint la première *x ou la dernière *y
       descend = 1; //on descend
-      if(colonne == 0) {
-        if(ligne != nbe - 1)
-          ligne++;
+      if(*x == 0) {
+        if(*y != nbe - 1)
+          *y += 1;
         else
-          colonne++;
+          *x += 1;
       }
       else
-      colonne++;
+      *x += 1;
     }
   }
-   
-
-  *x = colonne; *y = ligne;
+  
+  //*x = *x; *y = *y;
 }
 
 
