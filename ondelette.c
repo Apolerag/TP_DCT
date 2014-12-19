@@ -245,20 +245,18 @@ void ondelette_2d(float **image, int hauteur, int largeur)
 
 void quantif_ondelette(float **image, int hauteur, int largeur, float qualite)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  int i, j, temp;
+  while(hauteur > 1 || largeur > 1 || qualite > 1.f) {
+    for(i = 0; i < hauteur; ++i) {
+      for(j = 0; j < largeur; ++temp) {
+        j = 1 + (i + j + 1) * qualite;
+        image[i][j] = image[i][j] / temp;
+      }
+    }
+    largeur = largeur/2 + (largeur%2);
+    hauteur = hauteur/2 + (hauteur%2);
+    qualite = qualite/8.f;
+  }
 }
 
 /*
@@ -383,20 +381,18 @@ void ondelette_2d_inverse(float **image, int hauteur, int largeur)
 
 void dequantif_ondelette(float **image, int hauteur, int largeur, float qualite)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  int i, j, temp;
+  while(hauteur > 1 || largeur > 1 || qualite > 1.f) {
+    for(i = 0; i < hauteur; ++i) {
+      for(j = 0; j < largeur; ++j) {
+        temp = 1 + (i + j + 1) * qualite;
+        image[i][j] = image[i][j] * temp;
+      }
+    }
+    largeur = largeur/2 + (largeur%2);
+    hauteur = hauteur/2 + (hauteur%2);
+    qualite = qualite/8.f;
+  }
 }
 
 void decodage_ondelette(float **image, int hauteur, int largeur, FILE *f)
